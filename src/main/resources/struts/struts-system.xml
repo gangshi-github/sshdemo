@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+    "http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+    <package name="system" namespace="/system" extends="default">
+        <!-- 菜单管理Action -->
+        <action name="menu_*" class="com.example.action.system.MenuAction" method="{1}">
+            <result name="list">/WEB-INF/views/system/menu/list.jsp</result>
+            <result name="edit">/WEB-INF/views/system/menu/edit.jsp</result>
+            <result name="success" type="json"/>
+        </action>
+
+        <!-- 角色管理Action -->
+        <action name="role_*" class="com.example.action.system.RoleAction" method="{1}">
+            <result name="list">/WEB-INF/views/system/role/list.jsp</result>
+            <result name="edit">/WEB-INF/views/system/role/edit.jsp</result>
+        </action>
+    </package>
+</struts> 
