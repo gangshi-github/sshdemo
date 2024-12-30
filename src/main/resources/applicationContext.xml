@@ -3,14 +3,31 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:security="http://www.springframework.org/schema/security"
        xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
 		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <context:property-placeholder location="classpath:application.properties"/>
+    <!--security:authentication-manager/>-->
+    <security:global-method-security jsr250-annotations="enabled" secured-annotations="enabled"/>
+    <security:http auto-config="true">
+        <security:intercept-url pattern="/" access="hasRole('ROLE_ADMIN')"/>
+        <security:intercept-url pattern="/index.jsp" access="hasRole('ROLE_ADMIN')"/>
+        <security:form-login default-target-url="/index.jsp"/>
+        <security:logout logout-url="/logout.jsp" logout-success-url="/login.jsp"/>
+    </security:http>
+    <security:authentication-manager>
+        <security:authentication-provider>
+            <security:user-service>
+                <security:user name="admin" password="{noop}admin" authorities="ROLE_ADMIN"/>
+            </security:user-service>
+        </security:authentication-provider>
+    </security:authentication-manager>
 
     <context:component-scan base-package="com.virgo" />
     <!--整合启用jpa   @EnableJpaRepositories   注意引用包名正确性,否则使用@Autowired 无法注入成功-->
